@@ -1,14 +1,15 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const fsPromises = require('fs').promises;
 
 const ACTION_NAME = 'Create Service Comment';
 const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by ${ACTION_NAME} action\n---\n`;
 
-const constructCommentBody = (placeholders, { bold = true, infoMessage = DEFAULT_INFO_MESSAGE } = {}) => {
-  const getBaseMessage = () => infoMessage !== 'false' ? infoMessage : '';
+const constructCommentBody = (placeholders, { bold = true, infoMessage } = {}) => {
+  const baseMassage = infoMessage === false ? '' : infoMessage || DEFAULT_INFO_MESSAGE;
 
   if (!placeholders) {
-    return getBaseMessage();
+    return baseMassage;
   }
 
   if (!Array.isArray(placeholders)) {
@@ -23,7 +24,7 @@ const constructCommentBody = (placeholders, { bold = true, infoMessage = DEFAULT
 
   const placeholdersString = finalPlaceholders.join(':\n');
 
-  return getBaseMessage() + placeholdersString;
+  return baseMassage + placeholdersString;
 };
 
 const run = async () => {
@@ -32,24 +33,26 @@ const run = async () => {
     const octokit = github.getOctokit(authToken, { userAgent: ACTION_NAME });
     const context = github.context;
 
-    console.log(`TOKEN: ${authToken}`);
-
-    const placeholders = core.getInput('placeholders');
+    const infoMessage = core.getInput('info-message');
+    const placeholders = JSON.parse(core.getInput('placeholders'));
     const commentConstructorOptions = {
-      bold: Boolean(core.getInput('bold')),
-      infoMessage: core.getInput('info-message'),
+      bold: JSON.parse(core.getInput('bold')),
+      infoMessage: infoMessage === 'false' ? false : infoMessage,
     };
 
-    console.log(commentConstructorOptions);
-
+    const { owner, repo, number: issue_number } = context.issue;
     const body = constructCommentBody(placeholders, commentConstructorOptions);
 
-    const comment = await octokit.issues.createComment({
-      body,
-      ...context.issue,
-    });
+    const comment = await octokit.issues.createComment({ owner, repo, issue_number, body });
 
-    console.log(comment);
+    core.setOutput("comment-id", comment.data.id);
+
+    const OUTPUT_FILE_NAME = 'service_comment_info.json';
+
+    await fsPromises.writeFile(OUTPUT_FILE_NAME, JSON.stringify(comment.data, null, 2));
+
+    core.setOutput("path-to-output", OUTPUT_FILE_NAME);
+    console.log(`Successfully created ${OUTPUT_FILE_NAME}`);
   } catch (error) {
     core.setFailed(error.message);
   }
