@@ -43,13 +43,11 @@ const run = async () => {
 
     console.log(commentConstructorOptions);
     console.log(context.issue);
+    const { owner, repo, number: issue_number } = context.issue;
 
     const body = constructCommentBody(placeholders, commentConstructorOptions);
 
-    const comment = await octokit.issues.createComment({
-      body,
-      ...context.issue,
-    });
+    const comment = await octokit.issues.createComment({ owner, repo, issue_number, body });
 
     console.log(comment);
   } catch (error) {
