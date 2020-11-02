@@ -5,9 +5,8 @@ const fsPromises = require('fs').promises;
 const ACTION_NAME = 'Create Service Comment';
 const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by ${ACTION_NAME} action\n---\n`;
 
-const constructCommentBody = (placeholders, { bold = true, infoMessage = DEFAULT_INFO_MESSAGE } = {}) => {
-  const baseMassage = infoMessage || '';
-  console.log(infoMessage, baseMassage);
+const constructCommentBody = (placeholders, { bold = true, infoMessage } = {}) => {
+  const baseMassage = infoMessage === false ? '' : infoMessage || DEFAULT_INFO_MESSAGE;
 
   if (!placeholders) {
     return baseMassage;
@@ -35,9 +34,6 @@ const run = async () => {
     const context = github.context;
 
     const infoMessage = core.getInput('info-message');
-    const undefed = core.getInput('info-hoho');
-    console.log(infoMessage, 'info message');
-    console.log(undefed, 'hoho');
     const placeholders = JSON.parse(core.getInput('placeholders'));
     const commentConstructorOptions = {
       bold: JSON.parse(core.getInput('bold')),

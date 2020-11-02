@@ -21,7 +21,11 @@ jobs:
           auth-token: ${{ secrets.GITHUB_TOKEN }}
           placeholders: '["E2E Status", "Build Link"]'
           bold: 'false'
+      - name: Context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
       - uses: actions/upload-artifact@v2
         with:
           path: ${{ steps.create-service-comment.outputs.path-to-output }}
-#    if: github.event_name == 'opened'
+#    if: ${{ github.event.action == 'opened' }}
