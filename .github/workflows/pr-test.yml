@@ -12,14 +12,11 @@ jobs:
           auth-token: ${{ secrets.GITHUB_TOKEN }}
           placeholders: '["E2E Status", "Build Link"]'
           bold: 'false'
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
       - uses: actions/upload-artifact@v2
         with:
+          name: 'service_comment_data'
           path: ${{ steps.create-service-comment.outputs.path-to-output }}
-  #    if: ${{ github.event.action == 'opened' }}
+      if: ${{ github.event.action == 'opened' }}
   tests-pr:
     runs-on: ubuntu-latest
     steps:

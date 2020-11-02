@@ -48,18 +48,12 @@ const run = async () => {
     core.setOutput("comment-id", comment.data.id);
 
     const OUTPUT_FILE_NAME = 'service_comment_info.json';
-    console.log(OUTPUT_FILE_NAME);
 
     await fsPromises.writeFile(OUTPUT_FILE_NAME, JSON.stringify(comment.data, null, 2));
-    const file = await fsPromises.readFile(OUTPUT_FILE_NAME, { encoding: 'utf-8' });
-    console.log(file);
 
     core.setOutput("path-to-output", OUTPUT_FILE_NAME);
     console.log(`Successfully created ${OUTPUT_FILE_NAME}`);
-
-    console.log(comment);
   } catch (error) {
-    console.error(error);
     core.setFailed(error.message);
   }
 };
