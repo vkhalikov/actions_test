@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const fs = require('fs');
+const fsPromises = require('fs/promises');
 
 const ACTION_NAME = 'Create Service Comment';
 const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by ${ACTION_NAME} action\n---\n`;
@@ -33,19 +33,14 @@ const run = async () => {
     const octokit = github.getOctokit(authToken, { userAgent: ACTION_NAME });
     const context = github.context;
 
-    console.log(`TOKEN: ${authToken}`);
     const infoMessage = core.getInput('info-message');
     const placeholders = JSON.parse(core.getInput('placeholders'));
-
     const commentConstructorOptions = {
       bold: JSON.parse(core.getInput('bold')),
       infoMessage: infoMessage === 'false' ? false : infoMessage,
     };
 
-    console.log(commentConstructorOptions);
-    console.log(context.issue);
     const { owner, repo, number: issue_number } = context.issue;
-
     const body = constructCommentBody(placeholders, commentConstructorOptions);
 
     const comment = await octokit.issues.createComment({ owner, repo, issue_number, body });
@@ -53,15 +48,12 @@ const run = async () => {
     core.setOutput("comment-id", comment.data.id);
 
     const OUTPUT_FILE_NAME = 'service_comment_info.json';
+    const fileDescriptor = fsPromises.open(OUTPUT_FILE_NAME, 'w');
 
-    fs.writeFileSync(OUTPUT_FILE_NAME, JSON.stringify(comment.data, null, 2), (err) => {
-      if (err) {
-        throw err;
-      }
+    fileDescriptor.writeFile(JSON.stringify(comment.data, null, 2));
 
-      core.setOutput("path-to-output", OUTPUT_FILE_NAME);
-      console.log(`Successfully created ${OUTPUT_FILE_NAME}`);
-    });
+    core.setOutput("path-to-output", OUTPUT_FILE_NAME);
+    console.log(`Successfully created ${OUTPUT_FILE_NAME}`);
 
     console.log(comment);
   } catch (error) {
