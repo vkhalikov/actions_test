@@ -5,26 +5,26 @@ const fsPromises = require('fs').promises;
 const ACTION_NAME = 'Create Service Comment';
 const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by ${ACTION_NAME} action\n---\n`;
 
-const constructCommentBody = (placeholders, { bold = true, infoMessage } = {}) => {
+const constructCommentBody = (labels, { bold = true, infoMessage } = {}) => {
   const baseMassage = infoMessage === false ? '' : infoMessage || DEFAULT_INFO_MESSAGE;
 
-  if (!placeholders) {
+  if (!labels) {
     return baseMassage;
   }
 
-  if (!Array.isArray(placeholders)) {
-    throw new TypeError(`Placeholders should be an array, got ${typeof placeholders} instead`);
+  if (!Array.isArray(labels)) {
+    throw new TypeError(`Labels should be an array, got ${typeof labels} instead`);
   }
 
-  let finalPlaceholders = placeholders;
+  let finalLabels = labels;
 
   if (bold) {
-    finalPlaceholders = placeholders.map((placeholder) => `**${placeholder}**`);
+    finalLabels = labels.map((placeholder) => `**${placeholder}**`);
   }
 
-  const placeholdersString = finalPlaceholders.join(':\n');
+  const labelsString = finalLabels.join(':\n');
 
-  return baseMassage + placeholdersString;
+  return baseMassage + labelsString;
 };
 
 const run = async () => {
@@ -34,20 +34,20 @@ const run = async () => {
     const context = github.context;
 
     const infoMessage = core.getInput('info-message');
-    const placeholders = JSON.parse(core.getInput('placeholders'));
+    const labels = JSON.parse(core.getInput('labels'));
     const commentConstructorOptions = {
       bold: JSON.parse(core.getInput('bold')),
       infoMessage: infoMessage === 'false' ? false : infoMessage,
     };
 
     const { owner, repo, number: issue_number } = context.issue;
-    const body = constructCommentBody(placeholders, commentConstructorOptions);
+    const body = constructCommentBody(labels, commentConstructorOptions);
 
     const comment = await octokit.issues.createComment({ owner, repo, issue_number, body });
 
     core.setOutput("comment-id", comment.data.id);
 
-    const OUTPUT_FILE_NAME = 'service_comment_info.json';
+    const OUTPUT_FILE_NAME = 'service_comment_data.json';
 
     await fsPromises.writeFile(OUTPUT_FILE_NAME, JSON.stringify(comment.data, null, 2));
 
