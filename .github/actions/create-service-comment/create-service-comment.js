@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const fs = require('fs');
 
 const ACTION_NAME = 'Create Service Comment';
 const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by ${ACTION_NAME} action\n---\n`;
@@ -37,7 +38,7 @@ const run = async () => {
     const placeholders = JSON.parse(core.getInput('placeholders'));
 
     const commentConstructorOptions = {
-      bold: Boolean(core.getInput('bold')),
+      bold: JSON.parse(core.getInput('bold')),
       infoMessage: infoMessage === 'false' ? false : infoMessage,
     };
 
@@ -48,6 +49,19 @@ const run = async () => {
     const body = constructCommentBody(placeholders, commentConstructorOptions);
 
     const comment = await octokit.issues.createComment({ owner, repo, issue_number, body });
+
+    core.setOutput("comment-id", comment.data.id);
+
+    const OUTPUT_FILE_NAME = 'service_comment_info.json';
+
+    fs.writeFileSync(OUTPUT_FILE_NAME, JSON.stringify(comment.data, null, 2), (err) => {
+      if (err) {
+        throw err;
+      }
+
+      core.setOutput("path-to-output", OUTPUT_FILE_NAME);
+      console.log(`Successfully created ${OUTPUT_FILE_NAME}`);
+    });
 
     console.log(comment);
   } catch (error) {

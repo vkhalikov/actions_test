@@ -20,6 +20,8 @@ jobs:
         with:
           auth-token: ${{ secrets.GITHUB_TOKEN }}
           placeholders: '["E2E Status", "Build Link"]'
-          info-message: 'false'
           bold: 'false'
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ${{ steps.create-service-comment.outputs.path-to-output }}
 #    if: github.event_name == 'opened'
