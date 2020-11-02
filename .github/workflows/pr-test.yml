@@ -22,4 +22,4 @@ jobs:
           placeholders: '["E2E Status", "Build Link"]'
           info-message: 'false'
           bold: 'false'
-    if: github.event_name == 'opened'
+#    if: github.event_name == 'opened'
