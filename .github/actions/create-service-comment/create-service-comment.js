@@ -7,6 +7,7 @@ const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by
 
 const constructCommentBody = (placeholders, { bold = true, infoMessage = DEFAULT_INFO_MESSAGE } = {}) => {
   const baseMassage = infoMessage || '';
+  console.log(infoMessage, baseMassage);
 
   if (!placeholders) {
     return baseMassage;
@@ -51,7 +52,8 @@ const run = async () => {
     console.log(OUTPUT_FILE_NAME);
 
     await fsPromises.writeFile(OUTPUT_FILE_NAME, JSON.stringify(comment.data, null, 2));
-    console.log('after writing file');
+    const file = await fsPromises.readFile(OUTPUT_FILE_NAME);
+    console.log(file);
 
     core.setOutput("path-to-output", OUTPUT_FILE_NAME);
     console.log(`Successfully created ${OUTPUT_FILE_NAME}`);
