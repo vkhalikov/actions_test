@@ -8,6 +8,6 @@ jobs:
       - name: pr-action
         uses: ./.github/actions/pr-composite-action
         with:
-          worm-name: Swadeek
+          worm-name: KLEEEEEER
       - name: repo code
         run:  ./test.sh
