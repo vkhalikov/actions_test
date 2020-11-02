@@ -1,11 +1,11 @@
-name: pr-created
+name: pr-opened
 on:
   pull_request:
     branches:
       - master
-    types: [created]
+    types: [opened]
 jobs:
-  pr-created:
+  pr-opened:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
