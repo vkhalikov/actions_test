@@ -42,6 +42,7 @@ const run = async () => {
     };
 
     console.log(commentConstructorOptions);
+    console.log(context.issue);
 
     const body = constructCommentBody(placeholders, commentConstructorOptions);
 
@@ -52,6 +53,7 @@ const run = async () => {
 
     console.log(comment);
   } catch (error) {
+    console.error(error);
     core.setFailed(error.message);
   }
 };
