@@ -11,3 +11,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: create-service-comment
         uses: ./.github/actions/create-service-comment
+        with:
+          auth-token: ${{ secrets.GITHUB_TOKEN }}

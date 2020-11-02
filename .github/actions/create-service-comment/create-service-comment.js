@@ -1,12 +1,28 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-try {
-  const eventCtx = JSON.stringify(github.context.event, undefined, 2);
-  const ctx = JSON.stringify(github.context, undefined, 2);
+async function run() {
+  try {
+    const authToken = core.getInput('auth-token');
+    const octokit = github.getOctokit(authToken, { userAgent: 'create-service-comment-action' });
 
-  console.log(`The event context: ${eventCtx}`);
-  console.log(`The context: ${ctx}`);
-} catch (error) {
-  core.setFailed(error.message);
+    const context = github.context;
+
+    console.log(`TOKEN: ${authToken}`);
+    console.log(`The context: ${JSON.stringify(context, null, 2)}`);
+    console.log(`The repo: ${JSON.stringify(context.repo, null, 2)}`);
+
+    // const { data: pullRequest } = await octokit.pulls.get({
+    //   owner: 'octokit',
+    //   repo: 'rest.js',
+    //   pull_number: 123,
+    //   mediaType: {
+    //     format: 'diff'
+    //   }
+    // });
+  } catch (error) {
+    core.setFailed(error.message);
+  }
 }
+
+run();
