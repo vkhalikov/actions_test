@@ -1,0 +1,5 @@
+name: 'Create Service Comment'
+description: 'Creates a service comment in PR for future use by another actions'
+runs:
+  using: 'node12'
+  main: 'create-service-comment.js'
