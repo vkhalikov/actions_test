@@ -35,6 +35,9 @@ const run = async () => {
     const context = github.context;
 
     const infoMessage = core.getInput('info-message');
+    const undefed = core.getInput('info-hoho');
+    console.log(infoMessage, 'info message');
+    console.log(undefed, 'hoho');
     const placeholders = JSON.parse(core.getInput('placeholders'));
     const commentConstructorOptions = {
       bold: JSON.parse(core.getInput('bold')),
@@ -52,7 +55,7 @@ const run = async () => {
     console.log(OUTPUT_FILE_NAME);
 
     await fsPromises.writeFile(OUTPUT_FILE_NAME, JSON.stringify(comment.data, null, 2));
-    const file = await fsPromises.readFile(OUTPUT_FILE_NAME);
+    const file = await fsPromises.readFile(OUTPUT_FILE_NAME, { encoding: 'utf-8' });
     console.log(file);
 
     core.setOutput("path-to-output", OUTPUT_FILE_NAME);
