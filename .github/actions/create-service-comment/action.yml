@@ -5,8 +5,8 @@ inputs:
     description: 'String. GitHub auth token for Octokit access'
     required: true
   placeholders:
-    description: 'List. List of placeholders for future use by other actions'
-    #example: ['E2E Status', 'Build Link']
+    description: 'Array in JSON format. List of placeholders for future use by other actions'
+    #example: '["E2E Status", "Build Link"]'
     required: false
   bold:
     description: 'Boolean. Used to specify whether placeholders should be bold or not'
