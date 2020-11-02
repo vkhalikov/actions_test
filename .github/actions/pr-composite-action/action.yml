@@ -8,7 +8,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo Hello, Worm ${{ inputs.who-to-greet }}!
+    - run: echo Hello, Worm ${{ inputs.worm-name }}!
       shell: bash
     - run: ${{ github.action_path }}/pr-action.sh
       shell: bash
