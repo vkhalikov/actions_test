@@ -5,10 +5,10 @@ const ACTION_NAME = 'Create Service Comment';
 const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by ${ACTION_NAME} action\n---\n`;
 
 const constructCommentBody = (placeholders, { bold = true, infoMessage = DEFAULT_INFO_MESSAGE } = {}) => {
-  const getBaseMessage = () => infoMessage !== 'false' ? infoMessage : '';
+  const baseMassage = infoMessage || '';
 
   if (!placeholders) {
-    return getBaseMessage();
+    return baseMassage;
   }
 
   if (!Array.isArray(placeholders)) {
@@ -23,7 +23,7 @@ const constructCommentBody = (placeholders, { bold = true, infoMessage = DEFAULT
 
   const placeholdersString = finalPlaceholders.join(':\n');
 
-  return getBaseMessage() + placeholdersString;
+  return baseMassage + placeholdersString;
 };
 
 const run = async () => {
@@ -33,11 +33,12 @@ const run = async () => {
     const context = github.context;
 
     console.log(`TOKEN: ${authToken}`);
+    const infoMessage = core.getInput('info-message');
+    const placeholders = JSON.parse(core.getInput('placeholders'));
 
-    const placeholders = core.getInput('placeholders');
     const commentConstructorOptions = {
       bold: Boolean(core.getInput('bold')),
-      infoMessage: core.getInput('info-message'),
+      infoMessage: infoMessage === 'false' ? false : infoMessage,
     };
 
     console.log(commentConstructorOptions);
