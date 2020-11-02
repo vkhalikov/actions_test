@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const fsPromises = require('fs/promises');
+const fsPromises = require('fs').promises;
 
 const ACTION_NAME = 'Create Service Comment';
 const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by ${ACTION_NAME} action\n---\n`;
