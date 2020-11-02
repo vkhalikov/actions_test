@@ -1,0 +1,13 @@
+name: pr-test
+on: pull-request
+jobs:
+  tests-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: pr-action
+        uses: ./.github/actions/pr-composite-action
+        with:
+          worm-name: Swadeek
+      - name: repo code
+        run:  ./test.sh
