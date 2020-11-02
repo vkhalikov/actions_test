@@ -1,0 +1,13 @@
+name: pr-created
+on:
+  pull_request:
+    branches:
+      - master
+    types: [created]
+jobs:
+  pr-created:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create-service-comment
+        uses: ./.github/actions/create-service-comment
