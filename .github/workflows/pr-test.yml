@@ -11,3 +11,15 @@ jobs:
           worm-name: Swadeek
       - name: repo code
         run:  ./test.sh
+  create-service-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create-service-comment
+        uses: ./.github/actions/create-service-comment
+        with:
+          auth-token: ${{ secrets.GITHUB_TOKEN }}
+          placeholders: ['E2E Status', 'Build Link']
+          info-message: 'false'
+          bold: 'false'
+    if: github.event_name == 'opened'

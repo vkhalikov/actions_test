@@ -1,5 +1,19 @@
 name: 'Create Service Comment'
-description: 'Creates a service comment in PR for future use by another actions'
+description: 'Creates a service comment in PR for future use by other actions'
+inputs:
+  auth-token:
+    description: 'String. GitHub auth token for Octokit access'
+    required: true
+  placeholders:
+    description: 'List. List of placeholders for future use by other actions'
+    #example: ['E2E Status', 'Build Link']
+    required: false
+  bold:
+    description: 'Boolean. Used to specify whether placeholders should be bold or not'
+    required: false
+  info-message:
+    description: 'String or "false". Replaces the default message. If set to "false" disables it'
+    required: false
 runs:
   using: 'node12'
   main: 'create-service-comment.js'
