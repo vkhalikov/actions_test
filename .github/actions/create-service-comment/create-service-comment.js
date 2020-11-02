@@ -48,11 +48,10 @@ const run = async () => {
     core.setOutput("comment-id", comment.data.id);
 
     const OUTPUT_FILE_NAME = 'service_comment_info.json';
-    const filehandle = await fsPromises.open(OUTPUT_FILE_NAME, 'w');
+    console.log(OUTPUT_FILE_NAME);
 
-    await filehandle.writeFile(JSON.stringify(comment.data, null, 2));
-
-    await filehandle.close();
+    await fsPromises.writeFile(OUTPUT_FILE_NAME, JSON.stringify(comment.data, null, 2));
+    console.log('after writing file');
 
     core.setOutput("path-to-output", OUTPUT_FILE_NAME);
     console.log(`Successfully created ${OUTPUT_FILE_NAME}`);
