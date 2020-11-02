@@ -1,6 +1,25 @@
 name: pr-test
 on: pull_request
 jobs:
+  create-service-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: create-service-comment
+        name: create-service-comment
+        uses: ./.github/actions/create-service-comment
+        with:
+          auth-token: ${{ secrets.GITHUB_TOKEN }}
+          placeholders: '["E2E Status", "Build Link"]'
+          bold: 'false'
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ${{ steps.create-service-comment.outputs.path-to-output }}
+  #    if: ${{ github.event.action == 'opened' }}
   tests-pr:
     runs-on: ubuntu-latest
     steps:
@@ -11,21 +30,3 @@ jobs:
           worm-name: Swadeek
       - name: repo code
         run:  ./test.sh
-  create-service-comment:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: create-service-comment
-        uses: ./.github/actions/create-service-comment
-        with:
-          auth-token: ${{ secrets.GITHUB_TOKEN }}
-          placeholders: '["E2E Status", "Build Link"]'
-          bold: 'false'
-      - name: Context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - uses: actions/upload-artifact@v2
-        with:
-          path: ${{ steps.create-service-comment.outputs.path-to-output }}
-#    if: ${{ github.event.action == 'opened' }}
