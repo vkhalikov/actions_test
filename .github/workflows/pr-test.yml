@@ -16,7 +16,7 @@ jobs:
         with:
           name: service_comment_data
           path: ${{ steps.create-service-comment.outputs.path-to-output }}
-      if: ${{ github.event.action == 'opened' }}
+    if: ${{ github.event.action == 'opened' }}
   tests-pr:
     runs-on: ubuntu-latest
     steps:
