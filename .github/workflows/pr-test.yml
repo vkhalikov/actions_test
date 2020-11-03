@@ -9,9 +9,8 @@ jobs:
         name: create-service-comment
         uses: ./.github/actions/create-service-comment
         with:
-          auth-token: ${{ secrets.GITHUB_TOKEN }}
+          auth-token: ${{ secrets.AUTH_FOR_FORKS }}
           labels: '["E2E Status", "Build Link"]'
-          bold: 'false'
       - uses: actions/upload-artifact@v2
         with:
           name: service_comment_data
