@@ -19,10 +19,18 @@ const constructCommentBody = (labels, { bold = true, infoMessage } = {}) => {
   let finalLabels = labels;
 
   if (bold) {
-    finalLabels = labels.map((placeholder) => `**${placeholder}**`);
+    finalLabels = labels.map((placeholder) => {
+      let result = placeholder;
+
+      if (bold) {
+        result = `**${result}**`;
+      }
+
+      return result + ':\n';
+    });
   }
 
-  const labelsString = finalLabels.join(':\n');
+  const labelsString = finalLabels.join('');
 
   return baseMassage + labelsString;
 };
