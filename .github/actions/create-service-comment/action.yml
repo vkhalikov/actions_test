@@ -2,10 +2,10 @@ name: 'Create Service Comment'
 description: 'Creates a service comment in PR for future use by other actions.'
 inputs:
   auth-token:
-    description: 'String. GitHub auth token for Octokit access.'
+    description: 'String. GitHub auth token for Octokit authentication.'
     required: true
-  placeholders:
-    description: 'Array in JSON format. List of placeholders for future use by other actions.'
+  labels:
+    description: 'Array in JSON format. List of labels for future use by other actions.'
     #example: '["E2E Status", "Build Link"]'
     required: false
   bold:
@@ -17,8 +17,6 @@ inputs:
 outputs:
   comment-id:
     description: 'An ID of the created comment. Can be used later in a workflow.'
-  path-to-output:
-    description: 'A path to the file that contains info about created comment. Can be uploaded as an artifact.'
 runs:
   using: 'node12'
   main: 'create-service-comment.js'
