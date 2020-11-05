@@ -8,6 +8,7 @@ const REQUIRED_INPUTS = ['auth-token', 'label', 'value'];
 
 validateInputs(REQUIRED_INPUTS);
 
+const authToken = core.getInput('auth-token');
 const octokit = github.getOctokit(authToken, { userAgent: ACTION_NAME });
 const { owner, repo, number: issue_number } = github.context.issue;
 

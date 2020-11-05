@@ -10,7 +10,6 @@ const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by
 validateInputs(REQUIRED_INPUTS);
 
 const authToken = core.getInput('auth-token');
-
 const octokit = github.getOctokit(authToken, { userAgent: ACTION_NAME });
 const { owner, repo, number: issue_number } = github.context.issue;
 
@@ -49,7 +48,7 @@ const createComment = async ({ labels, bold, infoMessage }) => {
 
 const run = async () => {
   const labels = core.getInput('labels');
-  const bold = JSON.parse(core.getInput('bold'));
+  const bold = core.getInput('bold');
   const infoMessage = core.getInput('info-message');
 
   const createOptions = {
