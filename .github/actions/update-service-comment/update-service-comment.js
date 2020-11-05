@@ -14,14 +14,15 @@ const { owner, repo, number: issue_number } = github.context.issue;
 
 
 const updateValue = async ({ label, value, createIfNotFound }) => {
-  const comments = await octokit.issues.listComments({ owner, repo, issue_number });
+  const { data: comments } = await octokit.issues.listComments({ owner, repo, issue_number });
   const serviceComment = comments.find((comment) => comment.body.includes(MARK));
 
+  console.log(comments);
   if (!serviceComment) {
     throw new Error(`Can't find a service comment, make sure to create it first by using a "create" action type.`);
   }
 
-  const parsedBody = comments.body.split('\n');
+  const parsedBody = serviceComment.body.split('\n');
   const labelIdx = parsedBody.indexOf((line) => line.includes(label));
 
   if (labelIdx === -1) {
