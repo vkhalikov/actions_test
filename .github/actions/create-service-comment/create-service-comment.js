@@ -7,9 +7,9 @@ const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by
 
 const authToken = core.getInput('auth-token');
 
-// if (!authToken) {
-//   throw new Error(`Auth Token isn't provided.`);
-// }
+if (!authToken) {
+  throw new Error(`Auth Token isn't provided.`);
+}
 
 const octokit = github.getOctokit(authToken, { userAgent: ACTION_NAME });
 const { owner, repo, number: issue_number } = github.context.issue;

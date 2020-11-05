@@ -11,11 +11,7 @@ jobs:
         with:
           auth-token: ${{ secrets.GITUHB_TOKEN }}
           labels: '["E2E Status", "Build Link"]'
-      - uses: actions/upload-artifact@v2
-        with:
-          name: service_comment_data
-          path: ${{ steps.create-service-comment.outputs.path-to-output }}
-    if: ${{ github.event.action == 'opened' }}
+#    if: ${{ github.event.action == 'opened' }}
   tests-pr:
     runs-on: ubuntu-latest
     steps:
@@ -27,6 +23,7 @@ jobs:
           worm-name: Swadeek
       - name: update-service-comment-with-test-result
         uses: ./.github/actions/update-service-comment
+        if: ${{ always() }}
         with:
           auth-token: ${{ secrets.GITUHB_TOKEN }}
           label: E2E Status
