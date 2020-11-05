@@ -58,10 +58,10 @@ const run = async () => {
   };
 
   try {
-    const comment = await createComment(createOptions);
-    console.log(comment);
-    core.setOutput("comment-id", comment.data.id);
-    console.log(`Comment successfully created: ${comment.html_url}`);
+    const { data: { id, html_url } } = await createComment(createOptions);
+
+    core.setOutput("comment-id", id);
+    console.log(`Comment successfully created: ${html_url}`);
   } catch (error) {
     core.setFailed(error.message);
   }
