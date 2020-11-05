@@ -1,15 +1,15 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const { validateInputs } = require('../utils');
 const { MARK, LABEL_VALUE_SEPARATOR } = require('../sharedConstants');
 
 const ACTION_NAME = 'Create Service Comment';
+const REQUIRED_INPUTS = ['auth-token'];
 const DEFAULT_INFO_MESSAGE = `###### This comment was generated automatically by ${ACTION_NAME} action\n---\n`;
 
-const authToken = core.getInput('auth-token');
+validateInputs(REQUIRED_INPUTS);
 
-if (!authToken) {
-  throw new Error(`Auth Token isn't provided.`);
-}
+const authToken = core.getInput('auth-token');
 
 const octokit = github.getOctokit(authToken, { userAgent: ACTION_NAME });
 const { owner, repo, number: issue_number } = github.context.issue;

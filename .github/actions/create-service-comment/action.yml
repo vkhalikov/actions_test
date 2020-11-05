@@ -2,7 +2,7 @@ name: 'Create Service Comment'
 description: 'Creates a service comment in PR for future use by other actions.'
 inputs:
   auth-token:
-    description: 'String. GitHub auth token for Octokit access.'
+    description: 'String. GitHub auth token for Octokit authentication.'
     required: true
   labels:
     description: 'Array in JSON format. List of labels for future use by other actions.'

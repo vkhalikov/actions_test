@@ -2,7 +2,7 @@ name: 'Update Service Comment'
 description: 'Updates a value for label inside Service Comment.'
 inputs:
   auth-token:
-    description: 'String. GitHub auth token for Octokit access.'
+    description: 'String. GitHub auth token for Octokit authentication.'
     required: true
   label:
     description: 'String. List of placeholders for future use by other actions.'
@@ -16,4 +16,4 @@ inputs:
     default: false
 runs:
   using: 'node12'
-  main: 'create-service-comment.js'
+  main: 'update-service-comment.js'

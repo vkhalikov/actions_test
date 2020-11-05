@@ -9,7 +9,7 @@ jobs:
         name: create-service-comment
         uses: ./.github/actions/create-service-comment
         with:
-          auth-token: ${{ secrets.GITUHB_TOKEN }}
+          auth-token: ${{ secrets.GITHUB_TOKEN }}
           labels: '["E2E Status", "Build Link"]'
 #    if: ${{ github.event.action == 'opened' }}
   tests-pr:
@@ -25,6 +25,6 @@ jobs:
         uses: ./.github/actions/update-service-comment
         if: ${{ always() }}
         with:
-          auth-token: ${{ secrets.GITUHB_TOKEN }}
+          auth-token: ${{ secrets.GITHUB_TOKEN }}
           label: E2E Status
           value: ${{ steps.pr-action.outcome }}
