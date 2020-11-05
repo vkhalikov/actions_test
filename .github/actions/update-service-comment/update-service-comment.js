@@ -20,10 +20,9 @@ const updateValue = async ({ label, value, createIfNotFound }) => {
   if (!serviceComment) {
     throw new Error(`Can't find a service comment, make sure to create it first by using a "create" action type.`);
   }
-  console.log(serviceComment);
+
   const parsedBody = serviceComment.body.split('\n');
-  console.log(parsedBody);
-  const labelIdx = parsedBody.indexOf((line) => line.includes(label));
+  const labelIdx = parsedBody.indexOf(label);
 
   if (labelIdx === -1) {
     if (createIfNotFound) {
