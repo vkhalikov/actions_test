@@ -48,7 +48,7 @@ const run = async () => {
 
   try {
     await updateValue({ label, value, createIfNotFound: createIfNotFound && JSON.parse(createIfNotFound) });
-    console.log(`A value of ${label} successfully updated to ${value}`);
+    console.log(`A value of ${label} successfully updated to "${value}"`);
   } catch (error) {
     core.setFailed(error.message);
   }
