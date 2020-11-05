@@ -22,7 +22,7 @@ const updateValue = async ({ label, value, createIfNotFound }) => {
   }
 
   const parsedBody = serviceComment.body.split('\n');
-  const labelIdx = parsedBody.indexOf(label);
+  const labelIdx = parsedBody.findIndex((line) => line.includes(label));
 
   if (labelIdx === -1) {
     if (createIfNotFound) {
