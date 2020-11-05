@@ -1,0 +1,19 @@
+name: 'Update Service Comment'
+description: 'Updates a value for label inside Service Comment.'
+inputs:
+  auth-token:
+    description: 'String. GitHub auth token for Octokit access.'
+    required: true
+  label:
+    description: 'String. List of placeholders for future use by other actions.'
+    required: true
+  value:
+    description: 'Any. Used to specify whether placeholders should be bold or not.'
+    required: true
+  create-if-not-found:
+    description: 'Boolean. Creates a new label if it is not found by name.'
+    required: false
+    default: false
+runs:
+  using: 'node12'
+  main: 'create-service-comment.js'
