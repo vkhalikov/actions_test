@@ -1,0 +1,12 @@
+name: push
+on: push
+jobs:
+  tests-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: pr-action
+        name: pr-action
+        uses: ./.github/actions/pr-action
+        with:
+          worm-name: Swadeek

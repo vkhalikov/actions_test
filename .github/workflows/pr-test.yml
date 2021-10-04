@@ -9,20 +9,23 @@ jobs:
         name: create-service-comment
         uses: ./.github/actions/create-service-comment
         with:
-          auth-token: ${{ secrets.AUTH_FOR_FORKS }}
+          auth-token: ${{ secrets.GITHUB_TOKEN }}
           labels: '["E2E Status", "Build Link"]'
-      - uses: actions/upload-artifact@v2
-        with:
-          name: service_comment_data
-          path: ${{ steps.create-service-comment.outputs.path-to-output }}
     if: ${{ github.event.action == 'opened' }}
   tests-pr:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: pr-action
-        uses: ./.github/actions/pr-composite-action
+      - id: pr-action
+        name: pr-action
+        uses: ./.github/actions/pr-action
         with:
           worm-name: Swadeek
-      - name: repo code
-        run:  ./test.sh
+      - name: update-service-comment-with-test-result
+        uses: ./.github/actions/update-service-comment
+        if: ${{ always() }}
+        with:
+          auth-token: ${{ secrets.GITHUB_TOKEN }}
+          label: E2E Status
+          value: ${{ steps.pr-action.outcome }}
+        continue-on-error: true
